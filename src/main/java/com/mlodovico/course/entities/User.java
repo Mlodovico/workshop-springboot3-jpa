@@ -1,5 +1,6 @@
 package com.mlodovico.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -21,7 +22,7 @@ public class User implements Serializable {
     private String password;
 
     @OneToMany
-    @JoinColumn(name="order_id")
+    @JsonIgnore
     private List<Order> orders = new ArrayList<>();
 
     public User() {
