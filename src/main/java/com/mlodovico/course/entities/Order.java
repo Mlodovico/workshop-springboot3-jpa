@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="tb_order")
@@ -23,15 +25,18 @@ public class Order implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="client_id")
-    private User cliend;
+    private User clienId;
+
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>();
 
     public Order() {
     }
 
-    public Order(Long id, Instant moment, OrderStatus orderStatus, User cliend) {
+    public Order(Long id, Instant moment, OrderStatus orderStatus, User clienId) {
         this.id = id;
         this.moment = moment;
-        this.cliend = cliend;
+        this.clienId = clienId;
         setOrderStatus(orderStatus);
     }
 
@@ -61,8 +66,12 @@ public class Order implements Serializable {
         }
     }
 
-    public User getCliend() {
-        return cliend;
+    public User getClienId() {
+        return clienId;
+    }
+
+    public Set<OrderItem> getItems() {
+        return items;
     }
 
     @Override

@@ -1,9 +1,7 @@
 package com.mlodovico.course.resources;
 
 import com.mlodovico.course.entities.Category;
-import com.mlodovico.course.entities.User;
 import com.mlodovico.course.services.CategoryService;
-import com.mlodovico.course.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
