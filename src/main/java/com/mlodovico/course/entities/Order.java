@@ -40,6 +40,9 @@ public class Order implements Serializable {
         setOrderStatus(orderStatus);
     }
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
+
     public Long getId() {
         return id;
     }
@@ -68,6 +71,14 @@ public class Order implements Serializable {
 
     public User getClienId() {
         return clienId;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     public Set<OrderItem> getItems() {
