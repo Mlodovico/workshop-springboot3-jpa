@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_order_item")
@@ -63,4 +64,19 @@ public class OrderItem implements Serializable {
         this.price = price;
     }
 
+    public Double getSubTotal() {
+        return price * quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderItem orderItem = (OrderItem) o;
+        return Objects.equals(id, orderItem.id) && Objects.equals(quantity, orderItem.quantity) && Objects.equals(price, orderItem.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, quantity, price);
+    }
 }
