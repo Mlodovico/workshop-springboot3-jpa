@@ -42,4 +42,11 @@ public class UserResource {
 
         return ResponseEntity.created(uri).body(newUser);
     }
+
+    @DeleteMapping("/delete-user-by-id/{id}:userId")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }
