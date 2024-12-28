@@ -41,7 +41,7 @@ public class UserResource {
 
         for (User user: listAll) {
             if(user.getEmail().equals(newUser.getEmail())) {
-                throw new ServiceConfigurationError("Email already in use");
+                return ResponseEntity.status(409).build();
             }
         }
 
@@ -57,5 +57,12 @@ public class UserResource {
         service.delete(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/update-user-by-id/{id}:userId")
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
+        user = service.update(id, user);
+
+        return ResponseEntity.ok().body(user);
     }
 }
