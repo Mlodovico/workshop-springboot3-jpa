@@ -37,7 +37,16 @@ public class UserResource {
 
     @PostMapping("/insert-new-user")
     public ResponseEntity<User> insert(@RequestBody User newUser) {
+        List<User> listAll = service.findAll();
+
+        for (User user: listAll) {
+            if(user.getEmail().equals(newUser.getEmail())) {
+                throw new ServiceConfigurationError("Email already in use");
+            }
+        }
+
         newUser = service.insert(newUser);
+
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newUser.getId()).toUri();
 
         return ResponseEntity.created(uri).body(newUser);
