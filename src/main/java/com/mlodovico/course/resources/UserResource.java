@@ -27,12 +27,19 @@ public class UserResource {
     @GetMapping("/get-user-by-id/{id}:userId")
     public ResponseEntity<User> getUserById(@PathVariable final Long id) {
         User userObj = service.findById(id);
+        List<User> listUser = service.findAll();
 
         if(userObj == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok().body(userObj);
+        for (User user: listUser) {
+            if(user.getId().equals(id)) {
+                return ResponseEntity.ok().body(userObj);
+            }
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/insert-new-user")
@@ -54,15 +61,30 @@ public class UserResource {
 
     @DeleteMapping("/delete-user-by-id/{id}:userId")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+        List<User> listAll = service.findAll();
 
-        return ResponseEntity.noContent().build();
+        for (User userObj: listAll) {
+            if(userObj.getId().equals(id)) {
+                service.delete(id);
+
+                return ResponseEntity.noContent().build();
+            }
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/update-user-by-id/{id}:userId")
     public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
-        user = service.update(id, user);
+        List<User> listAll = service.findAll();
 
-        return ResponseEntity.ok().body(user);
+        for (User userObj: listAll) {
+            if(user.getId().equals(userObj.getId())) {
+                user = service.update(id, user);
+
+                return ResponseEntity.ok().body(user);
+            }
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
