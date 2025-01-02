@@ -15,12 +15,20 @@ public class ProductService {
     private ProductRepository repository;
 
     public List<Product> findAll() {
-        return repository.findAll();
+        try {
+            return repository.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching all products", e);
+        }
     }
 
     public Product findById(Long id) {
-        Optional<Product> userObj = repository.findById(id);
+        try {
+            Optional<Product> userObj = repository.findById(id);
 
-        return userObj.get();
+            return userObj.get();
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching product by ID", e);
+        }
     }
 }
