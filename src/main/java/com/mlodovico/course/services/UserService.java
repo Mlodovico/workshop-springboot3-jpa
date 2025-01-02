@@ -15,33 +15,57 @@ public class UserService {
     private UserRepository repository;
 
     public List<User> findAll() {
-        return repository.findAll();
+        try {
+            return repository.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching all users", e);
+        }
     }
 
     public User findById(Long id) {
-        Optional<User> userObj = repository.findById(id);
+        try {
+            Optional<User> userObj = repository.findById(id);
 
-        return userObj.get();
+            return userObj.get();
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching user by ID", e);
+        }
     }
 
     public User insert(User newUser) {
-        return repository.save(newUser);
+        try {
+            return repository.save(newUser);
+        } catch (Exception e) {
+            throw new RuntimeException("Error inserting new user", e);
+        }
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting user by ID", e);
+        }
     }
 
     public User update(Long id, User user) {
-        User entity = repository.getReferenceById(id);
-        updateData(entity, user);
+        try {
+            User entity = repository.getReferenceById(id);
+            updateData(entity, user);
 
-        return repository.save(entity);
+            return repository.save(entity);
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating user by ID", e);
+        }
     }
 
     public void updateData(User entity, User user) {
-        entity.setName(user.getName());
-        entity.setEmail(user.getEmail());
-        entity.setPhone(user.getPhone());
+        try {
+            entity.setName(user.getName());
+            entity.setEmail(user.getEmail());
+            entity.setPhone(user.getPhone());
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating user data", e);
+        }
     }
 }
