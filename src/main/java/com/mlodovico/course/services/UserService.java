@@ -2,6 +2,7 @@ package com.mlodovico.course.services;
 
 import com.mlodovico.course.entities.User;
 import com.mlodovico.course.repositories.UserRepository;
+import com.mlodovico.course.services.exceptions.ResourcesNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class UserService {
         try {
             Optional<User> userObj = repository.findById(id);
 
-            return userObj.get();
+            return userObj.orElseThrow(() -> new ResourcesNotFoundException(id));
         } catch (Exception e) {
             throw new RuntimeException("Error fetching user by ID", e);
         }
