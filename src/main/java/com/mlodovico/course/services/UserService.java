@@ -4,6 +4,7 @@ import com.mlodovico.course.entities.User;
 import com.mlodovico.course.repositories.UserRepository;
 import com.mlodovico.course.services.exceptions.DatabaseException;
 import com.mlodovico.course.services.exceptions.ResourcesNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -60,8 +61,8 @@ public class UserService {
             updateData(entity, user);
 
             return repository.save(entity);
-        } catch (Exception e) {
-            throw new RuntimeException("Error updating user by ID", e);
+        } catch (EntityNotFoundException e) {
+            throw new ResourcesNotFoundException(id);
         }
     }
 
