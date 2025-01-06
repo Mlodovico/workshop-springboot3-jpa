@@ -2,8 +2,11 @@ package com.mlodovico.course.services;
 
 import com.mlodovico.course.entities.User;
 import com.mlodovico.course.repositories.UserRepository;
+import com.mlodovico.course.services.exceptions.DatabaseException;
 import com.mlodovico.course.services.exceptions.ResourcesNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,8 +47,10 @@ public class UserService {
     public void delete(Long id) {
         try {
             repository.deleteById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("Error deleting user by ID", e);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourcesNotFoundException(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
         }
     }
 
